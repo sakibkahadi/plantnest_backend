@@ -23,7 +23,8 @@ export default [
             "no-unused-vars": "error", // Error on unused variables
             "no-undef": "off", // Error on undefined variables
             "prefer-const": "error", // Prefer `const` over `let`
-            "no-console": "warn", // Warn on `console` usage
+            "no-console": "warn", // Warn on `console` usage,
+            "@typescript-eslint/no-explicit-any":"warn"
         },
     },
 ];
