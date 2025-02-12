@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
-import { LocalUserModel, TLocalUser, TUserName } from './LU.interface';
+import { AdminModel, TAdmin, TAdminName } from './admin.interface';
 
-const userNameSchema = new Schema<TUserName>({
+const adminNameSchema = new Schema<TAdminName>({
   firstName: {
     type: String,
     required: [true, 'First name is required'],
@@ -17,7 +17,7 @@ const userNameSchema = new Schema<TUserName>({
   },
 });
 
-const localUserSchema = new Schema<TLocalUser, LocalUserModel>(
+const adminSchema = new Schema<TAdmin, AdminModel>(
   {
     id: { type: String, required: [true, 'Id is required'], unique: true },
     user: {
@@ -25,7 +25,7 @@ const localUserSchema = new Schema<TLocalUser, LocalUserModel>(
       ref: 'User',
       required: [true, 'User id is required'],
     },
-    name: { type: userNameSchema, required: [true, 'Name is required'] },
+    name: { type: adminNameSchema, required: [true, 'Name is required'] },
     gender: {
       type: String,
       enum: {
@@ -52,30 +52,27 @@ const localUserSchema = new Schema<TLocalUser, LocalUserModel>(
 );
 
 //virtuals
-localUserSchema.virtual('fullName').get(function () {
+adminSchema.virtual('fullName').get(function () {
   return this?.name?.firstName + this?.name?.lastName;
 });
 
-localUserSchema.pre('find', function (next) {
+adminSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
-localUserSchema.pre('findOne', function (next) {
+adminSchema.pre('findOne', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
-localUserSchema.pre('aggregate', function (next) {
+adminSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
-localUserSchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await LocalUser.findOne({ id });
+adminSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Admin.findOne({ id });
   return existingUser;
 };
 
 // Create the model
-export const LocalUser = mongoose.model<TLocalUser, LocalUserModel>(
-  'LocalUser',
-  localUserSchema,
-);
+export const Admin = mongoose.model<TAdmin, AdminModel>('Admin', adminSchema);
