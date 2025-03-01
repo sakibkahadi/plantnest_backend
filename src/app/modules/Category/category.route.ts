@@ -11,7 +11,6 @@ router.post(
 );
 
 router.get('/', CategoryControllers.getAllCategory);
-export const CategoryRoutes = router;
 
 router.patch(
   '/:id',
@@ -20,3 +19,4 @@ router.patch(
 );
 router.delete('/:id', CategoryControllers.deleteCategory);
 router.get('/:id', CategoryControllers.getSingeCategory);
+export const CategoryRoutes = router;

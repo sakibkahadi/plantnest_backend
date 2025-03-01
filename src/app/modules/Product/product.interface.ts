@@ -7,6 +7,7 @@ export type TReview = {
   createdAt: Date;
 };
 export type TProduct = {
+  productId: string;
   name: string;
   description: string;
   price: number;
@@ -18,7 +19,7 @@ export type TProduct = {
   category: Types.ObjectId;
   brand?: string;
   imageUrl?: string[];
-  reviews: TReview[];
+  reviews?: TReview[];
   averageRating: number;
   isFeatured: boolean;
 };
